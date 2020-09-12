@@ -20,3 +20,5 @@ Just finishing up...
 ```
 
 Lines between ".PY1" and ".PY2" will be executed in a python interpreter and the output will be stored in a file. In the example the file is "fib_seq.d". The preprocessor also puts the output of this file in the place of the script which generated it.
+
+See the examples to understand the implimentation. The roff example looks more elegant than latex one, as pgfplot syntax is rather heavy.
