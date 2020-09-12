@@ -1,0 +1,123 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+
+\title{One Dimensional Maps}	
+\author{Rajarshi}
+
+\maketitle
+
+\section{Introduction}
+Let us look at the {\bf logistic} map.
+
+\begin{align*}
+	x_{n+1} &= f(x_n) = rx_n(1 - x_n)
+\end{align*}
+
+The context of this relation is lies in population dynamics.
+The variable $x$ represents the population
+as a fraction of the population
+which can be sustained by the system.
+Hence the requirement is that
+
+\begin{align*}
+	0 \leq x \leq 1
+\end{align*}
+
+Given the bounds on $x$ we need require a simialr bound on $f(x)$.
+For the problem to be meaningfull we require
+
+\begin{align*}
+	0 \leq r \leq 4
+\end{align*}
+
+.PY1
+def logMap(r, N):
+	x = 0.0
+	h = 1.0/N
+	for i in range(N+1):
+		print x, r*x*(1.0-x)
+		x += h
+
+def line(xBeg, xEnd, N, m = 1.0, c = 0.0):
+	h = (xEnd - xBeg) / N
+	x = xBeg
+	for i in range(N):
+		print x, m*x + c
+		x += h
+r = 3.5
+.PY2
+
+\begin{center}
+\begin{tikzpicture}
+	\begin{axis}
+	[xlabel={$x_n$}, ylabel={$x_{n+1}$},
+	xmin=0, xmax=1, ymin=0, ymax=1,
+.PY1 logmapset.d
+print "ytick={", r/4, "},"
+.PY2
+	yticklabels={$r/4$}]
+
+		\addplot[blue] table{
+.PY1 logmap.d
+logMap(r, 50)
+.PY2
+		};
+	\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\section{Population Evolution}
+
+Value of $r$
+\emph{drastically} changes the patterns
+we observe in the sequence $x_n$
+
+\begin{center}
+.PY1 logGrowth.d
+def logGrowth(x, r, N):
+	for i in range(1, N):
+		print i, x
+		x = r*x*(1-x)
+
+paramList = [[0.1, 2.5, 50], [0.2, 3.2, 50], [0.1, 3.7, 50]]
+for [x, r, n] in paramList:
+	print "\\begin{tikzpicture}\n\\begin{axis}"
+	print "[title={$r=", r, "$}]"
+	print "\\addplot[only marks] table{"
+	logGrowth(x, r, n)
+	print "};"
+	print "\\end{axis}\n\\end{tikzpicture}\n"
+.PY2
+\end{center}
+
+
+\section{Cobweb diagrams}
+
+There is another nice geometric way
+of looking at the sequence we are interested in.
+
+\begin{center}
+.PY1 cobweb.d
+for [x, r, n] in paramList:
+	print "\\begin{tikzpicture}\n\\begin{axis}\n"
+	print "[xmin=0, xmax=1, ymin=0, ymax=1]"
+	print "\\addplot[black] table{"
+	line(0.0, 1.0, 50)
+	print "};\\addplot[black] table{"
+	logMap(r, 50)
+	print "};\\addplot table{\n"
+	n = 5
+	for i in range(n):
+		xNext = r*x*(1-x)
+		print x, xNext
+		print xNext, xNext
+		x = xNext
+	print "};\\end{axis}\n\\end{tikzpicture}\n"
+.PY2
+\end{center}
+\end{document}
