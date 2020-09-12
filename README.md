@@ -1,4 +1,4 @@
-#docript
+# docript
 
 Marking up text and wish to contaminate it with a scripting language of your choice? Here is roff style preprocessor to solve your problem.
 
