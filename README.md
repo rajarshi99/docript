@@ -26,3 +26,7 @@ See the examples to understand the implimentation. The roff example looks more e
 ### Programs used
 
 pdflatex or groff with grap et al
+
+### Side note
+Used python 2 input output methods.
+Surely wouldn't work with python3.
